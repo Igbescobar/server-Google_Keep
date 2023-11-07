@@ -1,13 +1,10 @@
-import express, { Request, Response } from 'express'
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import express from 'express'
+import { createTask, getAllTasks } from '../controllers/tasks.controllers'
 
 const router = express.Router()
 
-router.get('/', (_req: Request, res: Response) => {
-  return res.send('hello there')
-})
-
-router.post('/', (_req: Request, res: Response) => {
-  return res.send('task created')
-})
+router.get('/:id/all', getAllTasks)
+router.post('/:id/create', createTask)
 
 export default router
