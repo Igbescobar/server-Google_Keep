@@ -6,6 +6,10 @@ export interface ICategory extends Document {
   owner: ObjectId
 }
 
+// export interface CategoryParamsType {
+
+// }
+
 const categorySchema = new Schema(
   {
     title: {

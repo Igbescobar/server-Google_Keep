@@ -1,13 +1,11 @@
-import { Schema, model } from 'mongoose'
+import { Model, Schema, model } from 'mongoose'
 import bcrypt from 'bcrypt'
 import jwt, { type Secret } from 'jsonwebtoken'
+import { IUser } from './Types/User.Types'
+import { type ReqPayload } from './Types/ReqPayload.Type'
 
-export interface IUser extends Document {
-  userName: string
-  email: string
-  password: string
-  signToken: () => Promise<string>
-  validatePassword: (plainPassword: string) => boolean
+interface IUserModel extends Model<IUser> {
+  checkOwnerForUser: (userId: string, profileId: string) => Promise<number>
 }
 
 export interface UserPayload {
@@ -52,8 +50,8 @@ userSchema.methods.validatePassword = function (plainPassword: string) {
 }
 
 userSchema.methods.signToken = function () {
-  const { _id, userName } = this
-  const payload = { _id, userName }
+  const { id, username } = this
+  const payload: ReqPayload = { id, username }
   const authToken: string = jwt.sign(
     payload,
     process.env.TOKEN_SECRET as Secret,
@@ -62,6 +60,6 @@ userSchema.methods.signToken = function () {
   return authToken
 }
 
-const User = model<IUser>('User', userSchema)
+const User = model<IUser, IUserModel>('User', userSchema)
 
 export default User

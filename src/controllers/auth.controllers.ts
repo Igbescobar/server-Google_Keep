@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from 'express'
 import User from '../model/User.model'
+import { AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 export class StatusError extends Error {
   statusCode: number
@@ -11,7 +11,7 @@ export class StatusError extends Error {
   }
 }
 
-export const signup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const signup: AsyncRequestHandler = async (req, res) => {
   const { userName, email, password } = req.body
 
   try {
@@ -22,11 +22,11 @@ export const signup = async (req: Request, res: Response, next: NextFunction): P
       res.status(201).json({ message: 'User created' })
     }
   } catch (error) {
-    next(error)
+    res.status(400).json({ success: false, error })
   }
 }
 
-export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const login: AsyncRequestHandler = async (req, res) => {
   const { email, password } = req.body
 
   try {
@@ -39,9 +39,13 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       const authToken = foundUser.signToken()
       res.status(200).json({ authToken })
     } else {
-      throw new StatusError('Password incorrect', 401)
+      res.status(401).json({ errorMessages: ['Unable to authenticate the user'] })
     }
   } catch (error) {
-    next(error)
+    res.status(400).json({ success: false, error })
   }
+}
+
+export const verify: AsyncRequestHandler = async (req, res) => {
+  res.status(200).json(req.payload)
 }
