@@ -30,5 +30,5 @@ async function getTokenFromHeaders(req: Request, _res: Response): Promise<string
     return token
   }
 
-  return ''
+  return null
 }

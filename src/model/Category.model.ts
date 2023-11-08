@@ -32,6 +32,6 @@ const categorySchema = new Schema(
   }
 )
 
-const Category = model<ICategory>('Project', categorySchema)
+const Category = model<ICategory>('Category', categorySchema)
 
 export default Category
