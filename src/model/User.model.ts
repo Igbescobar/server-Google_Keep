@@ -9,8 +9,8 @@ interface IUserModel extends Model<IUser> {
 }
 
 export interface UserPayload {
-  id: string
-  userName: string
+  _id: string
+  username: string
 }
 
 const userSchema = new Schema(

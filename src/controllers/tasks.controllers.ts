@@ -1,3 +1,5 @@
+import { Response } from 'express'
+import { PayloadRequest } from '../middlewares/verifyToken.middleware'
 import Task from '../model/Tasks.model'
 import { AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
@@ -33,12 +35,14 @@ export const createTask: AsyncRequestHandler = async (req, res) => {
   }
 }
 
-export const updatedTask: AsyncRequestHandler = async (req, res) => {
-  const { id, completed }: { id: string, completed: boolean } = req.body
+export const updatedTask = async (req: PayloadRequest, res: Response): Promise<void> => {
+  const { _id, completed }: { _id: string, completed: boolean } = req.body
+  console.log(_id, completed)
+  console.log(req.body)
 
   try {
-    const updatedTask = await Task.findByIdAndUpdate(id, { $set: { completed: !completed } }, { new: true })
-    res.status(200).json(updatedTask)
+    const updatedTask = await Task.findByIdAndUpdate(_id, { $set: { completed: !completed } }, { new: true })
+    res.status(200).json({ updatedTask })
   } catch (error) {
     res.status(500).json({ success: false, error })
   }
