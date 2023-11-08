@@ -45,10 +45,10 @@ export const updatedTask: AsyncRequestHandler = async (req, res) => {
 }
 
 export const deleteTask: AsyncRequestHandler = async (req, res) => {
-  const { taskId } = req.params
+  const { id } = req.params
 
   try {
-    await Task.findByIdAndDelete(taskId)
+    await Task.findByIdAndDelete(id)
     res.status(204).json({ message: 'Task deleted' })
   } catch (error) {
     res.status(500).json({ success: false, error })

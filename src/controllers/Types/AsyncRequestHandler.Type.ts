@@ -1,5 +1,5 @@
 import { type Response, type NextFunction, type Request } from 'express'
-import { type ReqPayload } from '../../model/User.model'
+import { ReqPayload } from '../../model/Types/ReqPayload.Type'
 
 interface CustomeRequest extends Request {
   payload?: ReqPayload
