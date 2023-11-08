@@ -4,7 +4,7 @@ import { createCategory, getOneCategory } from '../controllers/category.controll
 
 const router = express.Router()
 
-router.get('/getOneCategory/:categoryId', getOneCategory)
+router.get('/getOneCategory', getOneCategory)
 router.post('/createCategory', createCategory)
 
 export default router
