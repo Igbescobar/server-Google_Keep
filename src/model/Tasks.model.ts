@@ -5,7 +5,7 @@ export interface IToDo extends Document {
   title: string
   description: string
   completed: boolean
-  categoryID: ICategory
+  categoryId: ICategory
   owner: ObjectId
 }
 
@@ -24,7 +24,7 @@ const taskSchema = new Schema(
       type: Boolean,
       default: false
     },
-    categoryID: {
+    categoryId: {
       type: Schema.Types.ObjectId,
       ref: 'Category'
     },

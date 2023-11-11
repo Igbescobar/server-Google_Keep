@@ -3,7 +3,7 @@ import { PayloadRequest } from '../middlewares/verifyToken.middleware'
 import Task from '../model/Tasks.model'
 import { AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
-export const getAllTasks: AsyncRequestHandler = async (req, res) => {
+export const getAllTasks = async (req: PayloadRequest, res: Response): Promise<void> => {
   const userId = req.payload?._id
 
   try {
@@ -14,18 +14,17 @@ export const getAllTasks: AsyncRequestHandler = async (req, res) => {
   }
 }
 
-export const createTask: AsyncRequestHandler = async (req, res) => {
+export const createTask = async (req: PayloadRequest, res: Response): Promise<void> => {
   const userId = req.payload?._id
   const { title } = req.body
-  console.log(userId, req.payload)
-
+  const { categoryId } = req.params
   try {
     const userTasks = await Task.find({ owner: userId })
     if (userTasks === null) {
       throw new Error('Error: User does not exist')
     }
 
-    const createdTask = await Task.create({ title, owner: userId })
+    const createdTask = await Task.create({ title, owner: userId, categoryId })
     if (createdTask === null) {
       throw new Error('Error: Task could not be created')
     }
