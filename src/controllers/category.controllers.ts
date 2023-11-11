@@ -14,17 +14,12 @@ export const getOneCategory = async (req: PayloadRequest, res: Response, next: N
 }
 
 export const createCategory = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-  const userId = req.payload?._id
+  const _id = req.payload?._id
   const { title } = req.body
-  console.log(userId, title)
+  console.log(_id, req.payload)
 
   try {
-    const userCategory = await Category.find({ owner: userId })
-    if (userCategory === null) {
-      throw new Error('Error: User does not exist')
-    }
-
-    const createdCategory = await Category.create({ title, owner: userId })
+    const createdCategory = await Category.create({ title, owner: _id })
     if (createdCategory === null) {
       throw new Error('Error: Category could not be created')
     }

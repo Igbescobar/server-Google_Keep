@@ -1,6 +1,6 @@
 import { type ObjectId } from 'mongoose'
 
 export interface ReqPayload {
-  id: ObjectId
+  _id: ObjectId
   username: string
 }

@@ -15,9 +15,9 @@ export interface UserPayload {
 
 const userSchema = new Schema(
   {
-    userName: {
+    username: {
       type: String,
-      required: [true, 'Username is required.'],
+      required: [true, 'Username is super duper required.'],
       trim: true
     },
     email: {
@@ -50,8 +50,8 @@ userSchema.methods.validatePassword = function (plainPassword: string) {
 }
 
 userSchema.methods.signToken = function () {
-  const { id, username } = this
-  const payload: ReqPayload = { id, username }
+  const { _id, username } = this
+  const payload: ReqPayload = { _id, username }
   const authToken: string = jwt.sign(
     payload,
     process.env.TOKEN_SECRET as Secret,

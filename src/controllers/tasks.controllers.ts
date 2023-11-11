@@ -4,7 +4,7 @@ import Task from '../model/Tasks.model'
 import { AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 export const getAllTasks: AsyncRequestHandler = async (req, res) => {
-  const userId = req.payload?.id
+  const userId = req.payload?._id
 
   try {
     const todos = await Task.find({ owner: userId })
@@ -15,8 +15,9 @@ export const getAllTasks: AsyncRequestHandler = async (req, res) => {
 }
 
 export const createTask: AsyncRequestHandler = async (req, res) => {
-  const userId = req.payload?.id
+  const userId = req.payload?._id
   const { title } = req.body
+  console.log(userId, req.payload)
 
   try {
     const userTasks = await Task.find({ owner: userId })

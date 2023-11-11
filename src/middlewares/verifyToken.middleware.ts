@@ -12,7 +12,8 @@ export type PayloadRequest<
 > = Request<P, ResBody, ReqBody, ReqQuery> & {
   payload?: UserPayload
 }
-export const isAuthenticated = expressjwt({
+
+const isAuthenticated = expressjwt({
   secret: process.env.TOKEN_SECRET as Secret,
   algorithms: ['HS256'],
   requestProperty: 'payload',
@@ -20,15 +21,12 @@ export const isAuthenticated = expressjwt({
 })
 
 // eslint-disable-next-line @typescript-eslint/space-before-function-paren
-async function getTokenFromHeaders(req: Request, _res: Response): Promise<string | null> {
-  if (req.headers.authorization === undefined) {
-    return ''
-  }
-
-  if (req.headers.authorization.split(' ')[0] === 'Bearer') {
+function getTokenFromHeaders(req: Request): string | undefined | null {
+  if (req?.headers?.authorization?.split(' ')[0] === 'Bearer') {
     const token = req.headers.authorization.split(' ')[1]
     return token
   }
-
   return null
 }
+
+export { isAuthenticated }

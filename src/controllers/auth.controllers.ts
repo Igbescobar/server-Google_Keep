@@ -1,5 +1,6 @@
+import { Response } from 'express'
+import { PayloadRequest } from '../middlewares/verifyToken.middleware'
 import User from '../model/User.model'
-import { AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 export class StatusError extends Error {
   statusCode: number
@@ -11,11 +12,11 @@ export class StatusError extends Error {
   }
 }
 
-export const signup: AsyncRequestHandler = async (req, res) => {
-  const { userName, email, password } = req.body
+export const signup = async (req: PayloadRequest, res: Response): Promise<void> => {
+  const { username, email, password } = req.body
 
   try {
-    const createUser = await User.create({ userName, email, password })
+    const createUser = await User.create({ username, email, password })
     if (createUser === null) {
       throw new StatusError('Error: Unable to create user', 422)
     } else {
@@ -26,7 +27,7 @@ export const signup: AsyncRequestHandler = async (req, res) => {
   }
 }
 
-export const login: AsyncRequestHandler = async (req, res) => {
+export const login = async (req: PayloadRequest, res: Response): Promise<void> => {
   const { email, password } = req.body
 
   try {
@@ -46,6 +47,6 @@ export const login: AsyncRequestHandler = async (req, res) => {
   }
 }
 
-export const verify: AsyncRequestHandler = async (req, res) => {
+export const verify = async (req: PayloadRequest, res: Response): Promise<void> => {
   res.status(200).json(req.payload)
 }

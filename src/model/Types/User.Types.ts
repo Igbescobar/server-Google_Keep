@@ -1,5 +1,5 @@
 export interface IUser extends Document {
-  userName: string
+  username: string
   email: string
   password: string
   signToken: () => Promise<string>
