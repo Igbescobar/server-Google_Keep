@@ -3,10 +3,10 @@ import Category from '../model/Category.model'
 import { PayloadRequest } from '../middlewares/verifyToken.middleware'
 
 export const getOneCategory = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-  const userId = req.payload?._id
+  const { categoryId } = req.params
 
   try {
-    const todos = await Category.find({ owner: userId })
+    const todos = await Category.findById(categoryId)
     res.status(200).json(todos)
   } catch (error) {
     next(error)

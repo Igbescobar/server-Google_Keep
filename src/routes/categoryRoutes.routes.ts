@@ -4,7 +4,7 @@ import { createCategory, getOneCategory, updateCategory } from '../controllers/c
 
 const router = express.Router()
 
-router.get('/getOneCategory', getOneCategory)
+router.get('/getOneCategory/:categoryId', getOneCategory)
 router.post('/createCategory', createCategory)
 router.put('/updateCategory/:categoryId', updateCategory)
 
