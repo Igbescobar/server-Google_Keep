@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express'
 import Category from '../model/Category.model'
 import { PayloadRequest } from '../middlewares/verifyToken.middleware'
+import { CategoryBodyType, CategoryParamsType } from '../schemas/category.shema'
 
 export const getOneCategory = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const { categoryId } = req.params
@@ -13,7 +14,7 @@ export const getOneCategory = async (req: PayloadRequest, res: Response, next: N
   }
 }
 
-export const createCategory = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
+export const createCategory = async (req: PayloadRequest<CategoryParamsType, unknown, CategoryBodyType>, res: Response, next: NextFunction): Promise<void> => {
   const _id = req.payload?._id
   const { title, description } = req.body
 
