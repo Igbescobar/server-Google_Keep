@@ -1,7 +1,6 @@
 import { Response } from 'express'
 import { PayloadRequest } from '../middlewares/verifyToken.middleware'
 import Task from '../model/Tasks.model'
-import { AsyncRequestHandler } from './Types/AsyncRequestHandler.Type'
 
 export const getAllTasks = async (req: PayloadRequest, res: Response): Promise<void> => {
   const userId = req.payload?._id
@@ -48,7 +47,7 @@ export const updatedTask = async (req: PayloadRequest, res: Response): Promise<v
   }
 }
 
-export const deleteTask: AsyncRequestHandler = async (req, res) => {
+export const deleteTask = async (req: PayloadRequest, res: Response): Promise<void> => {
   const { id } = req.params
 
   try {
