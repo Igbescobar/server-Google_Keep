@@ -40,7 +40,8 @@ export const updatedTask = async (req: PayloadRequest<unknown, unknown, TaskBody
   const { _id, title, description, completed } = req.body
 
   try {
-    const updatedTask = await Task.findByIdAndUpdate(_id, { $set: { title, description, completed: !completed } }, { new: true })
+    const updatedCompleted = completed !== undefined ? !completed : undefined
+    const updatedTask = await Task.findByIdAndUpdate(_id, { $set: { title, description, completed: updatedCompleted } }, { new: true })
     res.status(200).json({ updatedTask })
   } catch (error) {
     next(error)
@@ -51,8 +52,11 @@ export const deleteTask = async (req: PayloadRequest, res: Response, next: NextF
   const { id } = req.params
 
   try {
-    await Task.findByIdAndDelete(id)
-    res.status(204).json({ message: 'Task deleted' })
+    const findTask = await Task.findByIdAndDelete(id)
+    if (findTask === null) {
+      throw new Error('Error: Task could not be deleted')
+    }
+    res.status(200).json({ message: 'Task deleted' })
   } catch (error) {
     next(error)
   }
