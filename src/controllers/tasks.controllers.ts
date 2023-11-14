@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express'
 import { PayloadRequest } from '../middlewares/verifyToken.middleware'
 import Task from '../model/Tasks.model'
+import { TaskBodyCreation, TaskBodyUpdate } from '../schemas/task.schema'
 
 export const getAllTasks = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
   const userId = req.payload?._id
@@ -13,17 +14,18 @@ export const getAllTasks = async (req: PayloadRequest, res: Response, next: Next
   }
 }
 
-export const createTask = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-  const userId = req.payload?._id
-  const { title } = req.body
-  const { categoryId } = req.params
+export const createTask = async (req: PayloadRequest<unknown, unknown, TaskBodyCreation>, res: Response, next: NextFunction): Promise<void> => {
   try {
+    const { title, description, categoryId } = req.body
+
+    const userId = req.payload?._id
+
     const userTasks = await Task.find({ owner: userId })
     if (userTasks === null) {
       throw new Error('Error: User does not exist')
     }
 
-    const createdTask = await Task.create({ title, owner: userId, categoryId })
+    const createdTask = await Task.create({ title, description, owner: userId, categoryId })
     if (createdTask === null) {
       throw new Error('Error: Task could not be created')
     }
@@ -34,13 +36,11 @@ export const createTask = async (req: PayloadRequest, res: Response, next: NextF
   }
 }
 
-export const updatedTask = async (req: PayloadRequest, res: Response, next: NextFunction): Promise<void> => {
-  const { _id, completed }: { _id: string, completed: boolean } = req.body
-  console.log(_id, completed)
-  console.log(req.body)
+export const updatedTask = async (req: PayloadRequest<unknown, unknown, TaskBodyUpdate>, res: Response, next: NextFunction): Promise<void> => {
+  const { _id, title, description, completed } = req.body
 
   try {
-    const updatedTask = await Task.findByIdAndUpdate(_id, { $set: { completed: !completed } }, { new: true })
+    const updatedTask = await Task.findByIdAndUpdate(_id, { $set: { title, description, completed: !completed } }, { new: true })
     res.status(200).json({ updatedTask })
   } catch (error) {
     next(error)
